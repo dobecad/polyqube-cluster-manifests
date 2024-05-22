@@ -1,0 +1,19 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nvidia-dependencies
+  namespace: kube-system
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/dobecad/polyqube-cluster-manifests
+    targetRevision: HEAD
+    path: dev/manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+
+  automated:
+    selfHeal: true

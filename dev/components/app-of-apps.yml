@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "polyqube-cluster-apps"
+  namespace: "argocd"
+  labels:
+    app.kubernetes.io/name: polyqube-cluster-apps
+spec:
+  project: "default"
+  source:
+    repoURL: "git@github.com:dobecad/polyqube-cluster-manifests.git"
+    targetRevision: "main"
+    path: "dev/components/argocd"
+  destination:
+    ## NOTE: even if the internal apps target a remote cluster, the apps themselves should be in the Argo CD cluster
+    server: "https://kubernetes.default.svc"
+    namespace: "argocd"

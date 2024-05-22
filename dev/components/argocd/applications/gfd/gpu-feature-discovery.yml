@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nvidia-gpu-feature-discovery
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: nvidia-gpu-feature-discovery
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: "default"
+  source:
+    repoURL: "git@github.com:dobecad/polyqube-cluster-manifests.git"
+    targetRevision: "main"
+    path: "dev/components/manifests/gfd"
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=true
+      - ApplyOutOfSyncOnly=true
+      - RespectIgnoreDifferences=true
